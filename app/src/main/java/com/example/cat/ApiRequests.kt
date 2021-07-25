@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface ApiRequests {
 
-    @GET ("/articles/1")
+    @GET ("articles/1")
     fun getSpaceNews(): Call<SpaceNewsJson>
 }
