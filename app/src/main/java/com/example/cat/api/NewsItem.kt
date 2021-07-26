@@ -1,6 +1,6 @@
 package com.example.cat.api
 
-data class SpaceNewsJson(
+data class NewsItem(
     val events: List<Any>,
     val featured: Boolean,
     val id: Int,

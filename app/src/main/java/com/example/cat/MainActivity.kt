@@ -48,7 +48,9 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, data.toString())
 
                     withContext(Dispatchers.Main) {
-                        Title.text = data.title
+                        Title.text = data[0].title
+                        Title2.text = data[1].title
+                        Title3.text = data[2].title
                     }
 
                 }
