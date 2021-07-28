@@ -3,7 +3,13 @@ package com.example.cat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.constraintlayout.solver.widgets.Rectangle
+import androidx.core.app.ActivityCompat.recreate
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cat.api.News
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -12,27 +18,43 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.RecursiveAction
+
+private var titlesList = mutableListOf<String>()
+private var summaryList = mutableListOf<String>()
+private var dateList = mutableListOf<String>()
+private var newsSiteList = mutableListOf<String>()
 
 const val BASE_URL = "https://api.spaceflightnewsapi.net/v3/"
 val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        getCurrentData(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getCurrentData()
+    }
 
-        News.setOnClickListener()
-        {
-            val duration = Toast.LENGTH_SHORT
-            Toast.makeText(applicationContext, "ВСЁ ОК", duration).show()
-            getCurrentData()
+    private fun addToList(title: String, summary: String, date: String, newsSite: String){
+        titlesList.add(title)
+        summaryList.add(summary)
+        dateList.add(date)
+        newsSiteList.add(newsSite)
+    }
+
+    private fun postToList(data: News){
+        for(i in 0..4){
+            addToList(data[i].title, data[i].summary, data[i].updatedAt.substring(0, 10), data[i].newsSite)
         }
     }
 
-    private fun getCurrentData()
+    private fun getCurrentData(m: MainActivity)
     {
+
         val api = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -48,9 +70,9 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, data.toString())
 
                     withContext(Dispatchers.Main) {
-                        Title.text = data[0].title
-                        Title2.text = data[1].title
-                        Title3.text = data[2].title
+                        postToList(data)
+                        rv_NewsList.layoutManager = LinearLayoutManager(m)
+                        rv_NewsList.adapter = RecyclerAdapter(titlesList, summaryList, dateList, newsSiteList)
                     }
 
                 }
@@ -66,6 +88,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 }
 
 
