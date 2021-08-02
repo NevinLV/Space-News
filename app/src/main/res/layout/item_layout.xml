@@ -37,6 +37,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/tv_summary" android:textSize="14sp"
                     android:paddingBottom="15dp"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_launcher_background"
+                    android:id="@+id/imageView"
+                    android:layout_gravity="center"/>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"

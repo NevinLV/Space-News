@@ -1,5 +1,7 @@
 package com.example.cat
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.solver.widgets.Rectangle
 import androidx.core.app.ActivityCompat.recreate
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cat.api.News
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,6 +27,7 @@ private var titlesList = mutableListOf<String>()
 private var summaryList = mutableListOf<String>()
 private var dateList = mutableListOf<String>()
 private var newsSiteList = mutableListOf<String>()
+private var links = mutableListOf<String>()
 
 const val BASE_URL = "https://api.spaceflightnewsapi.net/v3/"
 val TAG = "MainActivity"
@@ -71,8 +75,9 @@ class MainActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         postToList(data)
+
                         rv_NewsList.layoutManager = LinearLayoutManager(m)
-                        rv_NewsList.adapter = RecyclerAdapter(titlesList, summaryList, dateList, newsSiteList)
+                        rv_NewsList.adapter = RecyclerAdapter(titlesList, summaryList, dateList, newsSiteList, links)
                     }
 
                 }
